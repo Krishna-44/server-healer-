@@ -1,0 +1,66 @@
+{
+  "_README": "Add YOUR critical apps below, set 'enabled': true, then run the installer. Healer keeps each enabled service alive: if its port stops listening, its health check fails, or its process dies, Healer restarts it (guarded against restart-loops). Set 'recover': false to only MONITOR + alert (e.g. a remote device you cannot restart). Everything is OFF by default so a fresh install does nothing until you configure it.",
+
+  "global": {
+    "poll_interval_s": 5,
+    "http_timeout_s": 3.0,
+    "tcp_timeout_s": 2.0,
+    "default_cooldown_s": 10,
+    "max_restarts_per_window": 6,
+    "restart_window_s": 600,
+    "breaker_cooldown_s": 300,
+    "boot_grace_s": 3,
+    "boot_timeout_s": 30,
+    "graceful_kill_s": 5,
+    "port_free_timeout_s": 8,
+    "validation_retries": 6,
+    "validation_interval_s": 2.0,
+    "alert_webhook": "",
+    "predictive": { "enabled": true }
+  },
+
+  "services": [
+    {
+      "_example": "A local web/app server on a port. EDIT, then set enabled:true. 'argv' = how to start it, 'cwd' = its folder.",
+      "name": "my-app",
+      "enabled": false,
+      "host": "127.0.0.1",
+      "port": 3000,
+      "health_url": "http://127.0.0.1:3000/",
+      "critical": true,
+      "recover": true,
+      "proc_match": "node",
+      "cooldown_s": 10,
+      "restart": {
+        "argv": ["node", "server.js"],
+        "cwd": "C:/path/to/your/app",
+        "env": {},
+        "log": "logs/my-app.log"
+      }
+    },
+    {
+      "_example2": "A port-less background process watched by name (ffmpeg, a python worker...). Use port:0 + proc_match.",
+      "name": "my-worker",
+      "enabled": false,
+      "port": 0,
+      "proc_match": "python worker.py",
+      "critical": true,
+      "recover": true,
+      "restart": {
+        "argv": ["python", "worker.py"],
+        "cwd": "C:/path/to/worker",
+        "log": "logs/my-worker.log"
+      }
+    },
+    {
+      "_example3": "A remote device (camera / DB) — MONITOR + alert only (cannot restart hardware). Set enabled:true + its IP.",
+      "name": "remote-device",
+      "enabled": false,
+      "host": "192.168.1.50",
+      "port": 554,
+      "remote": true,
+      "critical": true,
+      "recover": false
+    }
+  ]
+}

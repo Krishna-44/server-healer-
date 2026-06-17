@@ -1,0 +1,30 @@
+# Runtime state, logs, and snapshots
+logs/
+*.log
+watchdog_state.json
+watchdog_status.json
+watchdog_incidents.jsonl
+
+# Secrets
+.env
+tools/.env
+
+# Installer-generated launchers (created locally by install.py)
+run-daemon.cmd
+run-daemon-hidden.vbs
+run-daemon.sh
+_healer_register.ps1
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Lock files
+.lock-*
+
+# OS cruft
+.DS_Store
+Thumbs.db
